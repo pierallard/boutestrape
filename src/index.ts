@@ -1,6 +1,3 @@
-const foo = () => {
-  console.log('profzefutorout');
-  return 'prout';
-};
+import {BoutestrapeGame} from './game/BoutestrapeGame';
 
-foo();
+const game = new BoutestrapeGame();
