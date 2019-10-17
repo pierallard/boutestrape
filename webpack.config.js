@@ -11,5 +11,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'My beautiful installation'
         })
-    ]
+    ],
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 8080
+    }
 };
