@@ -9,7 +9,7 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.ts/, loader: 'ts-loader' }
+            { test: /\.ts/, loader: 'ts-loader', exclude: /node_modules/ }
         ]
     },
     entry: './src/index.ts',
@@ -22,7 +22,7 @@ module.exports = {
             templateParameters: {
                 'title': 'Boutestrape'
             },
-            template: 'src/assets/html/index.ejs'
+            template: 'src/assets/html/index.ejs',
         }),
         new CopyPlugin([
             { from: 'src/assets', to: 'assets' },

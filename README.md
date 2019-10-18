@@ -16,7 +16,7 @@ docker-compose run --rm -p 8080:8080 app npm run watch
 
 First build your app:
 ```
-docker-compose run --rm app npm run build
+docker-compose run --rm -u $(id -u ${USER}):$(id -g ${USER}) app npm run build
 ```
 Generated code will be in `dist` folder.
 To test it locally, you can run a server locally with:
