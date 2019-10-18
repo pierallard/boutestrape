@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 
 module.exports = {
     resolve: {
@@ -30,6 +31,9 @@ module.exports = {
         ]),
         new webpack.ProvidePlugin({
            Phaser: 'phaser',
+        }),
+        new ExtraWatchWebpackPlugin({
+            files: ['src/assets/**/*'],
         }),
     ],
     devServer: {
