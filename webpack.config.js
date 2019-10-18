@@ -19,10 +19,14 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'My beautiful installation'
+            templateParameters: {
+                'title': 'Boutestrape'
+            },
+            template: 'src/assets/html/index.ejs'
         }),
         new CopyPlugin([
             { from: 'src/assets', to: 'assets' },
+            { from: 'src/assets/favicon.ico', to: '.' },
         ]),
         new webpack.ProvidePlugin({
            Phaser: 'phaser',

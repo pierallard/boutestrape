@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode production",
     "start": "webpack-dev-server --host 0.0.0.0",
     "watch": "webpack-dev-server --watch --host 0.0.0.0"
   },

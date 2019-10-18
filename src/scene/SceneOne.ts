@@ -5,7 +5,7 @@ export default class SceneOne extends Scene {
   private berger: Image;
 
   preload () {
-    this.load.image('berger-allemand', 'assets/berger-allemand.jpg');
+    this.load.image('berger-allemand', 'assets/images/berger-allemand.jpg');
   }
 
   create() {
