@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import Game = Phaser.Game;
 import GameConfig = Phaser.Types.Core.GameConfig;
 import SceneOne from "../scene/SceneOne";

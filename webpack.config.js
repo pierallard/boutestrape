@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     resolve: {
@@ -23,6 +24,9 @@ module.exports = {
         new CopyPlugin([
             { from: 'src/assets', to: 'assets' },
         ]),
+        new webpack.ProvidePlugin({
+           Phaser: 'phaser',
+        }),
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),

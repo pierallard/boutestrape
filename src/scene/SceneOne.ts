@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import Scene = Phaser.Scene;
 import Image = Phaser.GameObjects.Image;
 
