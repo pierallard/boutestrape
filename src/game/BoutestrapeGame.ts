@@ -1,6 +1,7 @@
 import Game = Phaser.Game;
 import GameConfig = Phaser.Types.Core.GameConfig;
-import SceneOne from "../scene/SceneOne";
+import SceneObjectInstantiationExample from "../scene/SceneObjectInstantiationExample";
+import SceneMouseSelector from "../scene/SceneMouseSelector";
 
 export class BoutestrapeGame extends Game {
   constructor() {
@@ -10,11 +11,16 @@ export class BoutestrapeGame extends Game {
     };
     super(gameConfig);
 
-    this.scene.add(SceneOne.toString(), SceneOne);
+    this.scene.add(SceneObjectInstantiationExample.toString(), SceneObjectInstantiationExample);
+    this.scene.add(SceneMouseSelector.toString(), SceneMouseSelector);
   }
 
   start() {
     super.start();
-    this.scene.start(SceneOne.toString());
+    this.scene.start(SceneMouseSelector.toString());
+
+    // Deactivate right click
+    const canvas = this.canvas;
+    canvas.oncontextmenu = () => false;
   }
 }
