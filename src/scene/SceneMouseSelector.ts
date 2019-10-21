@@ -9,8 +9,15 @@ export default class SceneMouseSelector extends Scene {
   private graphics;
   private car: Car;
 
+  constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
+    super(config);
+  }
+
   preload () {
-    this.load.image('car', 'assets/images/car.png');
+    this.load.spritesheet('car', 'assets/images/car.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
   }
 
   create(settings: SettingsObject) {
@@ -23,6 +30,7 @@ export default class SceneMouseSelector extends Scene {
           alpha: 1
       },
     });
+    this.graphics.depth = 1000;
     this.input.on('pointerdown', (pointer: Pointer) => {
       if (pointer.leftButtonDown()) {
         this.originalPoint = new Point(pointer.x, pointer.y);
@@ -32,7 +40,7 @@ export default class SceneMouseSelector extends Scene {
     }).on('pointerup', (pointer: Pointer) => {
       this.setSelectionTo(new Point(pointer.x, pointer.y));
     });
-    this.car = new Car(this, this.game.renderer.width/2, this.game.renderer.height/2, 'car', 0);
+    this.car = new Car(this, this.game.renderer.width/2, this.game.renderer.height/2);
     this.add.existing(this.car);
   }
 
@@ -40,10 +48,10 @@ export default class SceneMouseSelector extends Scene {
     this.graphics.clear();
     if (this.originalPoint !== null) {
       this.graphics.strokeRect(
-        this.originalPoint.x + 0.5,
-        this.originalPoint.y + 0.5,
-        this.input.x - this.originalPoint.x,
-        this.input.y - this.originalPoint.y
+        Math.round(this.originalPoint.x) + 0.5,
+        Math.round(this.originalPoint.y) + 0.5,
+          Math.round(this.input.x - this.originalPoint.x - 1),
+            Math.round(this.input.y - this.originalPoint.y - 1)
       );
       if (this.isCarInside(new Point(this.input.activePointer.x, this.input.activePointer.y))) {
         this.car.highlight(true);

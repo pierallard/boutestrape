@@ -5,9 +5,20 @@ import SceneMouseSelector from "../scene/SceneMouseSelector";
 
 export class BoutestrapeGame extends Game {
   constructor() {
+    const REAL_WIDTH = 1200;
+    const REAL_HEIGHT = 800;
+    const PIXEL_ART_ZOOM = 4;
     const gameConfig: GameConfig = {
-      width: 800,
-      height: 600,
+      type: Phaser.WEBGL,
+      width: REAL_WIDTH / PIXEL_ART_ZOOM,
+      height: REAL_HEIGHT / PIXEL_ART_ZOOM,
+      render: {
+        antialias: false,
+        pixelArt: true,
+        roundPixels: false,
+      },
+      backgroundColor: '#1b2632',
+      zoom: PIXEL_ART_ZOOM,
     };
     super(gameConfig);
 
