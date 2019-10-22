@@ -7,8 +7,9 @@ import Pointer = Phaser.Input.Pointer;
 import Point = Phaser.Geom.Point;
 import Tween = Phaser.Tweens.Tween;
 import Graphics = Phaser.GameObjects.Graphics;
+import TileMapHelper from "../gameobjects/TileMapHelper";
 
-export default class SceneAStar extends Scene {
+export default class PlayerMoveOnClick extends Scene {
   private easystar: EasyStar;
   private character: Image;
   private path: { x: number; y: number }[] = [];
@@ -22,25 +23,12 @@ export default class SceneAStar extends Scene {
   }
 
   preload() {
-    this.load.spritesheet('8bitset', 'assets/images/8bitset.png', {frameHeight: 8, frameWidth: 8});
-    this.load.tilemapTiledJSON('map', 'assets/tilemaps/map.json');
+    TileMapHelper.preload(this);
     this.load.image('character', 'assets/images/character.png');
   }
 
   create(settings: SettingsObject) {
-    const tilemap = this.add.tilemap('map');
-    const tileset = tilemap.addTilesetImage(
-      '8bitset', // The name of the tileset in Tiled
-      '8bitset' // The key of the spritesheet in PhaserJS
-    );
-    const ground = tilemap.createStaticLayer(
-      'ground', // The name of the layer in Tiled
-      tileset
-    );
-    const objects = tilemap.createStaticLayer(
-      'objects', // The name of the layer in Tiled
-      tileset
-    );
+    TileMapHelper.create(this);
 
     this.character = this.add.image(0, 0, 'character');
     this.character.setOrigin(0, 0);
@@ -49,13 +37,13 @@ export default class SceneAStar extends Scene {
     });
 
     const grid = [];
-    for (let y = 0; y < tilemap.height; y++) {
+    for (let y = 0; y < TileMapHelper.tilemap.height; y++) {
       grid[y] = [];
-      for (let x = 0; x < tilemap.width; x++) {
+      for (let x = 0; x < TileMapHelper.tilemap.width; x++) {
         grid[y][x] = 0;
       }
     }
-    objects.forEachTile((tile: Tile) => {
+    TileMapHelper.objects.forEachTile((tile: Tile) => {
       if (tile.index !== -1) {
         grid[tile.y][tile.x] = 1; // It's not 0, so it's a wall.
       }
@@ -118,8 +106,8 @@ export default class SceneAStar extends Scene {
         characterPosition = new Point(x.end, y.end);
       }
     }
-    const charPos = SceneAStar.getGridPoint(characterPosition);
-    const newPos = SceneAStar.getGridPoint(point);
+    const charPos = PlayerMoveOnClick.getGridPoint(characterPosition);
+    const newPos = PlayerMoveOnClick.getGridPoint(point);
     this.easystar.findPath(charPos.x, charPos.y, newPos.x, newPos.y, (path: { x: number, y: number }[]) => {
       if (path !== null) {
         path.shift();
