@@ -6,6 +6,8 @@ import Key = Phaser.Input.Keyboard.Key;
 import Tween = Phaser.Tweens.Tween;
 import Point = Phaser.Geom.Point;
 
+enum MOVEMENT { JUST_PRESSED, PRESSED }
+
 export default class PlayerMoveZQSD extends Scene {
   private character: Image;
   private topKey: Key;
@@ -13,6 +15,12 @@ export default class PlayerMoveZQSD extends Scene {
   private leftKey: Key;
   private rightKey: Key;
   private tween: Tween = null;
+  private movement: MOVEMENT;
+
+  constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
+    super(config);
+    this.movement = MOVEMENT.PRESSED;
+  }
 
   preload() {
     TileMapHelper.preload(this);
@@ -34,18 +42,24 @@ export default class PlayerMoveZQSD extends Scene {
     if (this.tween !== null) {
       return;
     }
-    if (Phaser.Input.Keyboard.JustDown(this.topKey)) {
+
+    if (this.isKeyDown(this.topKey)) {
       this.moveTo(new Point(this.character.x, this.character.y - 8));
-    } else if (Phaser.Input.Keyboard.JustDown(this.rightKey)) {
+    } else if (this.isKeyDown(this.rightKey)) {
       this.moveTo(new Point(this.character.x + 8, this.character.y));
-    } else if (Phaser.Input.Keyboard.JustDown(this.leftKey)) {
+    } else if (this.isKeyDown(this.leftKey)) {
       this.moveTo(new Point(this.character.x - 8, this.character.y));
-    } else if (Phaser.Input.Keyboard.JustDown(this.bottomKey)) {
+    } else if (this.isKeyDown(this.bottomKey)) {
       this.moveTo(new Point(this.character.x, this.character.y + 8));
     }
   }
 
   private moveTo(point: Point) {
+    if (TileMapHelper.getNonWalkablePositions().find((element) => {
+      return PlayerMoveZQSD.getGridPoint(point).x === element.x && PlayerMoveZQSD.getGridPoint(point).y === element.y;
+    })) {
+      return;
+    }
     this.tween = this.add.tween({
       targets: this.character,
       x: point.x,
@@ -55,5 +69,16 @@ export default class PlayerMoveZQSD extends Scene {
         this.tween = null;
       }
     })
+  }
+
+  private isKeyDown(key: Key): boolean {
+    switch (this.movement) {
+      case MOVEMENT.JUST_PRESSED: return Phaser.Input.Keyboard.JustDown(key);
+      case MOVEMENT.PRESSED: return key.isDown;
+    }
+  };
+
+  private static getGridPoint(point: Point): Point {
+    return new Point(Math.floor(point.x / 8), Math.floor(point.y / 8));
   }
 }

@@ -32,6 +32,7 @@ export class BoutestrapeGame extends Game {
 
   start() {
     super.start();
+    // this.scene.start(PlayerMoveOnClick.toString());
     this.scene.start(PlayerMoveZQSD.toString());
 
     // Deactivate right click

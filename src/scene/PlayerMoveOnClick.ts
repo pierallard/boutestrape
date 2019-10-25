@@ -1,13 +1,15 @@
 import Scene = Phaser.Scene;
 import {js as EasyStar} from 'easystarjs';
 import SettingsObject = Phaser.Types.Scenes.SettingsObject;
-import Tile = Phaser.Tilemaps.Tile;
 import Image = Phaser.GameObjects.Image;
 import Pointer = Phaser.Input.Pointer;
 import Point = Phaser.Geom.Point;
 import Tween = Phaser.Tweens.Tween;
 import Graphics = Phaser.GameObjects.Graphics;
 import TileMapHelper from "../gameobjects/TileMapHelper";
+
+const GRID_WALKABLE = 0;
+const GRID_NOT_WALKABLE = 1;
 
 export default class PlayerMoveOnClick extends Scene {
   private easystar: EasyStar;
@@ -40,16 +42,14 @@ export default class PlayerMoveOnClick extends Scene {
     for (let y = 0; y < TileMapHelper.tilemap.height; y++) {
       grid[y] = [];
       for (let x = 0; x < TileMapHelper.tilemap.width; x++) {
-        grid[y][x] = 0;
+        grid[y][x] = GRID_WALKABLE;
       }
     }
-    TileMapHelper.objects.forEachTile((tile: Tile) => {
-      if (tile.index !== -1) {
-        grid[tile.y][tile.x] = 1; // It's not 0, so it's a wall.
-      }
+    TileMapHelper.getNonWalkablePositions().forEach((point: Point) => {
+      grid[point.y][point.x] = GRID_NOT_WALKABLE;
     });
     this.easystar.setGrid(grid);
-    this.easystar.setAcceptableTiles([0]);
+    this.easystar.setAcceptableTiles([GRID_WALKABLE]);
     this.easystar.enableCornerCutting();
     this.easystar.setIterationsPerCalculation(10000);
 
@@ -88,25 +88,25 @@ export default class PlayerMoveOnClick extends Scene {
   }
 
   private moveCharacterTo(point: Phaser.Geom.Point) {
-    let characterPosition = new Point(this.character.x, this.character.y);
+    let characterStartPosition = new Point(this.character.x, this.character.y);
     if (this.tween) {
       // Character is moving ; we will use the next position as first step of path finder
       const data = this.tween.data;
-      const x = data.find((target) => {
+      const tweenX = data.find((target) => {
         return target.key === 'x';
       });
-      const y = data.find((target) => {
+      const tweenY = data.find((target) => {
         return target.key === 'y';
       });
-      if (x.elapsed === 0) {
+      if (tweenX.elapsed === 0) {
         // There is a tween, but it has not began. Stop the character here.
         this.tween.stop();
         this.tween = null;
       } else {
-        characterPosition = new Point(x.end, y.end);
+        characterStartPosition = new Point(tweenX.end, tweenY.end);
       }
     }
-    const charPos = PlayerMoveOnClick.getGridPoint(characterPosition);
+    const charPos = PlayerMoveOnClick.getGridPoint(characterStartPosition);
     const newPos = PlayerMoveOnClick.getGridPoint(point);
     this.easystar.findPath(charPos.x, charPos.y, newPos.x, newPos.y, (path: { x: number, y: number }[]) => {
       if (path !== null) {
