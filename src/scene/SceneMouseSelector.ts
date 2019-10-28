@@ -14,7 +14,7 @@ export default class SceneMouseSelector extends Scene {
   }
 
   preload () {
-    this.load.spritesheet('car', 'assets/images/car.png', {
+    this.load.spritesheet('car', 'assets/images/car2.png', {
       frameWidth: 32,
       frameHeight: 32,
     });

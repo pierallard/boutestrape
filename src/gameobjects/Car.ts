@@ -45,18 +45,8 @@ export default class Car extends Sprite {
       repeat: 0,
       yoyo: false
     });
-    const angle = vector.angle();
-    [
-      [0 * Math.PI/4, 1 * Math.PI/4, 1, 1, 0],
-      [1 * Math.PI/4, 3 * Math.PI/4, 1, 1, 1],
-      [3 * Math.PI/4, 5 * Math.PI/4, -1, 1, 0],
-      [5 * Math.PI/4, 7 * Math.PI/4, 1, -1, 1],
-      [7 * Math.PI/4, 8 * Math.PI/4, 1, 1, 0],
-    ].forEach((toto) => {
-      if (angle >= toto[0] && angle < toto[1]) {
-        this.setScale(toto[2], toto[3]);
-        this.setFrame(toto[4]);
-      }
-    });
+    const RENDERED_ANGLES = 16;
+    const frame = Math.floor((vector.angle() + Math.PI/RENDERED_ANGLES) / (Math.PI * 2) * RENDERED_ANGLES);
+    this.setFrame(frame);
   }
 }

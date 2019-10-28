@@ -27,3 +27,9 @@ To test it locally, you can run a server locally with:
 ```
 docker-compose run --rm --service-ports app npm run start
 ```
+
+# Utils
+
+```
+convert /tmp/0*.png +append -remap src/assets/images/pico8-custom-palette.png src/assets/images/car2.png 
+```

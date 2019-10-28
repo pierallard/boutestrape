@@ -9,7 +9,7 @@ export class BoutestrapeGame extends Game {
   constructor() {
     const REAL_WIDTH = 1200;
     const REAL_HEIGHT = 800;
-    const PIXEL_ART_ZOOM = 4;
+    const PIXEL_ART_ZOOM = 2;
     const gameConfig: GameConfig = {
       type: Phaser.WEBGL,
       width: REAL_WIDTH / PIXEL_ART_ZOOM,
@@ -33,7 +33,8 @@ export class BoutestrapeGame extends Game {
   start() {
     super.start();
     // this.scene.start(PlayerMoveOnClick.toString());
-    this.scene.start(PlayerMoveZQSD.toString());
+    // this.scene.start(PlayerMoveZQSD.toString());
+    this.scene.start(SceneMouseSelector.toString());
 
     // Deactivate right click
     const canvas = this.canvas;
