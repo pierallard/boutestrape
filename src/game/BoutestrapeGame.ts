@@ -4,6 +4,7 @@ import SceneObjectInstantiationExample from "../scene/SceneObjectInstantiationEx
 import SceneMouseSelector from "../scene/SceneMouseSelector";
 import PlayerMoveOnClick from "../scene/PlayerMoveOnClick";
 import PlayerMoveZQSD from "../scene/PlayerMoveZQSD";
+import ScenePhysicsAngle from "../scene/ScenePhysicsAngle";
 import ScenePhysics from "../scene/ScenePhysics";
 
 export class BoutestrapeGame extends Game {
@@ -35,6 +36,7 @@ export class BoutestrapeGame extends Game {
     this.scene.add(SceneMouseSelector.toString(), SceneMouseSelector);
     this.scene.add(PlayerMoveOnClick.toString(), PlayerMoveOnClick);
     this.scene.add(PlayerMoveZQSD.toString(), PlayerMoveZQSD);
+    this.scene.add(ScenePhysicsAngle.toString(), ScenePhysicsAngle);
     this.scene.add(ScenePhysics.toString(), ScenePhysics);
   }
 
@@ -43,7 +45,7 @@ export class BoutestrapeGame extends Game {
     // this.scene.start(PlayerMoveOnClick.toString());
     // this.scene.start(PlayerMoveZQSD.toString());
     // this.scene.start(SceneMouseSelector.toString());
-    this.scene.start(ScenePhysics.toString());
+    this.scene.start(ScenePhysicsAngle.toString());
 
     // Deactivate right click
     const canvas = this.canvas;

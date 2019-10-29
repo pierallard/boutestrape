@@ -2,18 +2,21 @@ import Scene = Phaser.Scene;
 import SettingsObject = Phaser.Types.Scenes.SettingsObject;
 import Key = Phaser.Input.Keyboard.Key;
 import Sprite = Phaser.GameObjects.Sprite;
+import Vector2 = Phaser.Math.Vector2;
 
 const ACCELERATION = 100;
 const DECELERATION = 0.99;
+const ROTATION = 0.01;
 const BRAKE = 0.95;
 
-export default class ScenePhysics extends Scene {
+export default class ScenePhysicsAngle extends Scene {
   private car: Sprite;
   private topKey: Key;
   private bottomKey: Key;
   private leftKey: Key;
   private rightKey: Key;
   private spaceKey: Key;
+  private angle: number = 0;
 
   preload () {
     this.load.spritesheet('car', 'assets/images/car2.png', {
@@ -40,20 +43,30 @@ export default class ScenePhysics extends Scene {
     body.setMass(1000);
     body.setFriction(10,10);
     body.setAcceleration(0, 0);
+
+    const rotatedVector = new Vector2(
+      Math.cos(this.angle),
+      Math.sin(this.angle),
+    );
+    const normalizedVector = new Vector2(
+      rotatedVector.x * ACCELERATION,
+      rotatedVector.y * ACCELERATION
+    );
+
     if (this.topKey.isDown) {
-      body.setAccelerationY(-ACCELERATION);
+      body.setVelocity(normalizedVector.x, normalizedVector.y);
     } else if (this.bottomKey.isDown) {
-      body.setAccelerationY(ACCELERATION);
+      body.setVelocity(- normalizedVector.x, - normalizedVector.y);
     } else {
-      body.setVelocityY(body.velocity.y * DECELERATION);
+      // body.setVelocityY(body.velocity.y * DECELERATION);
     }
 
     if (this.rightKey.isDown) {
-      body.setAccelerationX(ACCELERATION);
+      this.angle += ROTATION;
     } else if (this.leftKey.isDown) {
-      body.setAccelerationX(-ACCELERATION);
+      this.angle -= ROTATION;
     } else {
-      body.setVelocityX(body.velocity.x * DECELERATION);
+      // body.setVelocityX(body.velocity.x * DECELERATION);
     }
 
     if (this.spaceKey.isDown) {
@@ -64,7 +77,7 @@ export default class ScenePhysics extends Scene {
     }
 
     const RENDERED_ANGLES = 16;
-    const frame = (Math.floor((body.velocity.angle() + Math.PI/RENDERED_ANGLES) / (Math.PI * 2) * RENDERED_ANGLES) % RENDERED_ANGLES);
+    const frame = (Math.floor((this.angle + Math.PI/RENDERED_ANGLES) / (Math.PI * 2) * RENDERED_ANGLES) % RENDERED_ANGLES);
     this.car.setFrame(frame);
   }
 }

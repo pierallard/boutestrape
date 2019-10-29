@@ -46,7 +46,7 @@ export default class Car extends Sprite {
       yoyo: false
     });
     const RENDERED_ANGLES = 16;
-    const frame = Math.floor((vector.angle() + Math.PI/RENDERED_ANGLES) / (Math.PI * 2) * RENDERED_ANGLES);
+    const frame = (Math.floor((vector.angle() + Math.PI/RENDERED_ANGLES) / (Math.PI * 2) * RENDERED_ANGLES) % RENDERED_ANGLES);
     this.setFrame(frame);
   }
 }
