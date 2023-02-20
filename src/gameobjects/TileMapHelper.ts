@@ -1,15 +1,15 @@
 import Scene = Phaser.Scene;
 import Point = Phaser.Geom.Point;
 import Tile = Phaser.Tilemaps.Tile;
-import StaticTilemapLayer = Phaser.Tilemaps.StaticTilemapLayer;
+import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import Tileset = Phaser.Tilemaps.Tileset;
 import Tilemap = Phaser.Tilemaps.Tilemap;
 
 export default class TileMapHelper {
   public static tilemap: Tilemap;
   public static tileset: Tileset;
-  public static ground: StaticTilemapLayer;
-  public static objects: StaticTilemapLayer;
+  public static ground: TilemapLayer;
+  public static objects: TilemapLayer;
 
   static preload(scene: Scene) {
     scene.load.spritesheet('8bitset', 'assets/images/8bitset.png', {frameHeight: 8, frameWidth: 8});
@@ -22,11 +22,11 @@ export default class TileMapHelper {
       '8bitset',  // The name of the tileset in Tiled
       '8bitset'         // The key of the spritesheet in PhaserJS
     );
-    this.ground = this.tilemap.createStaticLayer(
+    this.ground = this.tilemap.createLayer(
       'ground',       // The name of the layer in Tiled
       this.tileset
     );
-    this.objects = this.tilemap.createStaticLayer(
+    this.objects = this.tilemap.createLayer(
       'objects',      // The name of the layer in Tiled
       this.tileset
     );

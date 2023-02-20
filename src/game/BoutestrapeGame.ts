@@ -44,8 +44,8 @@ export class BoutestrapeGame extends Game {
     super.start();
     // this.scene.start(PlayerMoveOnClick.toString());
     // this.scene.start(PlayerMoveZQSD.toString());
-    // this.scene.start(SceneMouseSelector.toString());
-    this.scene.start(ScenePhysicsAngle.toString());
+    this.scene.start(SceneMouseSelector.toString());
+    // this.scene.start(ScenePhysicsAngle.toString());
 
     // Deactivate right click
     const canvas = this.canvas;

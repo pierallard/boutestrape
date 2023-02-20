@@ -6,6 +6,7 @@ const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 
 module.exports = () => {
     return {
+        mode: 'development',
         resolve: {
             extensions: ['.ts', '.js']
         },
@@ -26,10 +27,12 @@ module.exports = () => {
                 },
                 template: 'src/assets/html/index.ejs',
             }),
-            new CopyPlugin([
-                {from: 'src/assets', to: 'assets'},
-                {from: 'src/assets/favicon.ico', to: '.'},
-            ]),
+            new CopyPlugin({
+                patterns: [
+                    {from: 'src/assets', to: 'assets'},
+                    {from: 'src/assets/favicon.ico', to: '.'},
+                ]
+            }),
             new webpack.ProvidePlugin({
                 Phaser: 'phaser',
             }),
@@ -38,7 +41,9 @@ module.exports = () => {
             }),
         ],
         devServer: {
-            contentBase: path.join(__dirname, 'dist'),
+            static: {
+                directory: path.join(__dirname, 'dist'),
+            },
             compress: true,
             port: parseInt(process.env.SERVER_PORT || 8080)
         }
