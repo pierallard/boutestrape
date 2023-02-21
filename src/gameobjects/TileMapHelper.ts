@@ -16,7 +16,7 @@ export default class TileMapHelper {
     scene.load.tilemapTiledJSON('map', 'assets/tilemaps/map.json');
   }
 
-  static create(scene: Scene) {
+  static create(scene: Scene, params: {withObjects: boolean} = {withObjects: true}) {
     this.tilemap = scene.add.tilemap('map');
     this.tileset = this.tilemap.addTilesetImage(
       '8bitset',  // The name of the tileset in Tiled
@@ -26,10 +26,12 @@ export default class TileMapHelper {
       'ground',       // The name of the layer in Tiled
       this.tileset
     );
-    this.objects = this.tilemap.createLayer(
-      'objects',      // The name of the layer in Tiled
-      this.tileset
-    );
+    if (params.withObjects) {
+      this.objects = this.tilemap.createLayer(
+        'objects',      // The name of the layer in Tiled
+        this.tileset
+      );
+    }
   }
 
   static getNonWalkablePositions(): Point[] {
