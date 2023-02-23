@@ -7,17 +7,21 @@ import Road from "../gameobjects/Road";
 import {Direction} from "../helper/Direction";
 import Wood, {WoodType} from "../gameobjects/Wood";
 import Factory from "../gameobjects/Factory";
+import {Grid} from "../helper/Grid";
 
 export default class Scene2D extends Scene {
   private trees: Tree[];
   private houses: House[];
-  private roads: Road[];
+  // private roads: Road[];
   private woods: Wood[];
   private factories: Factory[];
+
+  private grid: Grid;
 
   constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
     super(config);
 
+    this.grid = new Grid(20, 20);
     this.trees = [
       new Tree(5, 11),
       new Tree(8, 10),
@@ -25,13 +29,11 @@ export default class Scene2D extends Scene {
       new Tree(13, 10),
     ];
     this.houses = [];
-    this.roads = [
-      new Road(5, 12, Direction.SOUTH),
-      new Road(5, 13, Direction.SOUTH),
-      new Road(5, 14, Direction.SOUTH),
-      new Road(5, 15, Direction.WEST),
-      new Road(4, 16, Direction.EAST),
-    ]
+    this.grid.add(5, 12, new Road(Direction.SOUTH));
+    this.grid.add(5, 13, new Road(Direction.SOUTH));
+    this.grid.add(5, 14, new Road(Direction.SOUTH));
+    this.grid.add(5, 15, new Road(Direction.WEST));
+    this.grid.add(5, 16, new Road(Direction.WEST));
     this.factories = [
       new Factory(4, 15, Direction.WEST),
     ]
@@ -49,13 +51,13 @@ export default class Scene2D extends Scene {
     this.trees.forEach(tree => tree.create(this));
     this.houses.forEach(house => house.create(this));
     this.factories.forEach(factory => factory.create(this));
-    this.roads.forEach(road => road.create(this));
+    this.grid.create(this);
   }
 
   update(time: number, delta: number): void {
     this.trees.forEach(tree => tree.update());
     this.houses.forEach(house => house.update());
-    this.roads.forEach(road => road.update());
+    this.grid.update();
     this.factories.forEach(factory => factory.update(this));
     this.woods.forEach(wood => wood.update(this));
   }
@@ -83,11 +85,11 @@ export default class Scene2D extends Scene {
   }
 
   getRoadDirection(x: number, y: number) {
-    for (const road of this.roads) {
-      if (road.getX() === x && road.getY() === y) {
-        return road.getDirection();
-      }
+    const roadDirection = this.grid.getRoadDirection(x, y);
+    if (!!roadDirection) {
+      return roadDirection;
     }
+
     for (const house of this.houses) {
       if (house.getX() === x && house.getY() === y) {
         return house.getDirection();
